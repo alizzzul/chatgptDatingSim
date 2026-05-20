@@ -30,11 +30,40 @@ public:
 	int getPrecio() { return precioItem; }
 	int getCantidad() { return cantidadItem; }
 
-	//setter oara la "tiendita"
+	//setter para la "tiendita"
 	void reducirCantidad()
 	{
 		if (cantidadItem > 0) cantidadItem--;
 	}
+};
+
+class Virus
+{
+private:
+	std::string nombreVirus;
+	int saludActual;
+	int danio;
+
+public: 
+	Virus(std::string param_nombre, int param_salud, int param_danio)
+	{
+		nombreVirus = param_nombre;
+		saludActual = param_salud;
+		danio = param_danio;
+	}
+
+	//getters
+
+	std::string getNombre() { return nombreVirus; }
+	int getSalud() { return saludActual; }
+	int getAtaque() { return danio; }
+
+	bool estaVivo() { return saludActual > 0; }
+
+	void atacar(Jugador& objetivo) {
+		std::cout << "\n[!] " << nombreArchivo << " enemigo atacando..." << std::endl;
+		objetivo.recibirDanio(danioAtaque);
+
 };
 
 class Jugador
@@ -60,7 +89,7 @@ public:
 		danioAtaqueJugador = 20;
 
 	}
-	//getters orifinales
+	//getters originales
 	std::string getNombre() { return nombreJugador; }
 	int getOro() { return oroJugador; }
 
@@ -70,7 +99,7 @@ public:
 
 	//comprar
 	void gastarOro(int cantidad) { oroJugador -= cantidad; }
-
+	//Revisa que jugador aún tenga vida 
 	bool estaVivo() { return saludActual > 0; }
 
 	void mostrarInfoJugador() {
@@ -80,7 +109,7 @@ public:
 
 		std::cout << "--- INVENTARIO ---" << std::endl;
 
-		if (inventario.empty())
+		if (inventario.empty())//Asegura por si el inventario está vacio
 		{
 			std::cout << "INVENTARIO VACÍO" << std::endl;
 		}
@@ -102,14 +131,14 @@ public:
 
 	void recibirDanio(int danio)
 	{
-		saludActual -= danio;
+		saludActual -= danio; //se resta daño hecho a la vida
 		if (saludActual < 0) { saludActual = 0;  } //para q no tenga vida negativa 
 		std::cout << "¡Recibiste " << danio << "MB de archivos corruptos (danio)" << std::endl; // cambiar por algo mas coketo
 	}
 
 	void curar(int cantidad)
 	{
-		saludActual += cantidad;
+		saludActual += cantidad; //se le añade la cantidad a curarse a la vida 
 		if (saludActual > saludMax) 
 		{
 			saludActual = saludMax; //para que no se pase de la cantidad max de vida 
@@ -134,13 +163,13 @@ void abrirTienda(Jugador& jugador, std::vector<Item> &catalogo)
 
 		std::cout << "0. SALIR " << std::endl;
 		std::cout << "q quieres descargar/comprar?: ";
-		std::cin >> opcion;
+		std::cin >> opcion;  //opcion del jugador 
 
 		if (opcion > 0 && opcion <= catalogo.size())
 		{
-			int indice = opcion - 1; 
+			int indice = opcion - 1; //como la maquina lee el indice desde el cero se le resta para que sea la opcion elegida 
 
-			if (catalogo[indice].getCantidad() > 0 && jugador.getOro() >= catalogo[indice].getPrecio())
+			if (catalogo[indice].getCantidad() > 0 && jugador.getOro() >= catalogo[indice].getPrecio()) 
 			{
 				//cobrar"" y reducir cantidad disponible:3
 				jugador.gastarOro(catalogo[indice].getPrecio());
@@ -177,15 +206,13 @@ int main()
 
 	Jugador jugador(nombrePersonalizable, 1000); // monedas, ccambiarla por una variable para no hardcodear o no mi acuerdo como se decia pero si aja cambiala
 
+	//se crean los items y sus cantidades desde main para que no se reinice cada que se llama a la tienda
 	std::vector<Item> catalogo = {
 	Item("Antivirus de Fuerza Bruta", "Aumenta tu dano contra Archivos Corruptos.", 200, 3),
 	Item("Pocion de Firewall", "ChatGPT no podra rastrear tu IP temporalmente.", 100, 5),
 	Item("Borrador de Historial", "Te vuelve invisible a sus berrinches.", 150, 2),
 	Item("Remedio de Backup", "Restaura archivos vitales danados en combate.", 50, 10)
 	};
-
-
-
 
 
 	std::cout << "ARCO 1 CHAT SE ONDEA JUGADOR SE VA CON GEMINI DETECTA ARCHIVOS RAUROS Y LE PIDE A JUGADOR Q SE CONECTE ALA TIENDA CREO" << std::endl;
