@@ -36,71 +36,96 @@ public:
 		if (cantidadItem > 0) cantidadItem--;
 	}
 };
-
-class Virus
-{
-private:
-	std::string nombreVirus;
+//clase padre para pasar por herencia
+class EntidadSistema {
+protected:
+	std::string nombre;
 	int saludActual;
-	int danio;
+	int danioAtaque;
+	int nivel;
+	int experiencia;
 
-public: 
-	Virus(std::string param_nombre, int param_salud, int param_danio)
+public:
+	EntidadSistema(std::string param_nombre, int param_salud, int param_ataque)
 	{
-		nombreVirus = param_nombre;
+		nombre = param_nombre;
 		saludActual = param_salud;
-		danio = param_danio;
+		saludMax = param_salud;
+		danioAtaque = param_ataque;
+		nivel = 1;
+		experiencia = 0;
 	}
-
-	//getters
 
 	std::string getNombre() { return nombreVirus; }
 	int getSalud() { return saludActual; }
 	int getAtaque() { return danio; }
+	int getNivel() { return nivel; }
 
 	bool estaVivo() { return saludActual > 0; }
 
-	void atacar(Jugador& objetivo) {
-		std::cout << "\n[!] " << nombreArchivo << " enemigo atacando..." << std::endl;
-		objetivo.recibirDanio(danioAtaque);
+	void recibirDanio(int danio)
+	{
+		saludActual -= danio; //se resta daño hecho a la vida
+		if (saludActual < 0) { saludActual = 0; } //para q no tenga vida negativa 
+	}
 
-};
 
-class Jugador
+	class Virus : public EntidadSistema
+	{
+	public:
+		Virus(std::string param_nombre, int param_salud, int param_ataque, param_xpQueSuelta) : EntidadSistema(param_nombre, param_salud, param_ataque)
+		{
+			experiencia = param_xpQueSuelta;
+		}
+
+		int getExperienciaQueSuelta() { return experiencia; }
+
+		void atacar(Jugador& objetivo)
+		{
+			std::cout << "\n[!] " << nombre << " esta ejecutando un script malicioso..." << std::endl;
+			objetivo.recibirDanio(danioAtaque);
+			std::cout << "Tienes " << danioAtaque << "MB de archivos corruptos" << std::endl;
+		}
+
+
+class Jugador : public EntidadSistema
 {
 private:
-	std::string nombreJugador;
+
 	int oroJugador; // cambiar despues por otra "moneda"
 	std::vector<Item> inventario;
-	//stats para combate (10/05)
-	int saludActual;
-	int saludMax;
-	int danioAtaqueJugador;
+
 	//constructor
 public:
-	Jugador(std::string param_nombre, int oroInicial)
+	Jugador(std::string param_nombre, int oroInicial) : EntidadSistema(param_nombre, 100, 20)
 	{
-
-		nombreJugador = param_nombre;
 		oroJugador = oroInicial;
-		//stats para combate base
-		saludActual = 100;
-		saludMax = 100;
-		danioAtaqueJugador = 20;
-
 	}
-	//getters originales
-	std::string getNombre() { return nombreJugador; }
-	int getOro() { return oroJugador; }
 
-	//getters combate
+	//getters originales
+	int getOro() { return oroJugador; }
+	//comprar
+	void gastarOro(int cantidad) { oroJugador -= cantidad; }
+	void ganarOro(int cantidad) { oroJugador += cantidad; }
+
+	void curar(int cantidad)
+	{
+		saludActual += cantidad; //se le añade la cantidad a curarse a la vida 
+		if (saludActual > saludMax)
+		{
+			saludActual = saludMax; //para que no se pase de la cantidad max de vida 
+		}
+	}
+
+	
+
+	/*getters combate
 	int getSalud() { return saludActual; }
 	int getAtaque() { return danioAtaqueJugador; }
 
-	//comprar
-	void gastarOro(int cantidad) { oroJugador -= cantidad; }
 	//Revisa que jugador aún tenga vida 
-	bool estaVivo() { return saludActual > 0; }
+	bool estaVivo() { return saludActual > 0; } */
+
 
 	void mostrarInfoJugador() {
 		std::cout << "Usuario:" << nombreJugador << "Monedas(?): $" << oroJugador << std::endl;
@@ -129,21 +154,8 @@ public:
 		inventario.push_back(nuevoItem); // se agrega al final
 	}
 
-	void recibirDanio(int danio)
-	{
-		saludActual -= danio; //se resta daño hecho a la vida
-		if (saludActual < 0) { saludActual = 0;  } //para q no tenga vida negativa 
-		std::cout << "¡Recibiste " << danio << "MB de archivos corruptos (danio)" << std::endl; // cambiar por algo mas coketo
-	}
+	
 
-	void curar(int cantidad)
-	{
-		saludActual += cantidad; //se le añade la cantidad a curarse a la vida 
-		if (saludActual > saludMax) 
-		{
-			saludActual = saludMax; //para que no se pase de la cantidad max de vida 
-		}
-	}
 };
 
 void abrirTienda(Jugador& jugador, std::vector<Item> &catalogo)
