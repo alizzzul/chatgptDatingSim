@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 //Items seran "archivos" o "apks"??
 
 class Item {
@@ -207,6 +208,66 @@ void abrirTienda(Jugador& jugador, std::vector<Item> &catalogo)
 	} while(opcion != 0); // 0 para salir 
 }
 
+//Funcion de combate :3
+
+void iniciarCombate(Jugador& jugador)
+{
+	Virus enemigo("Troyano_Celoso.exe", 50, 10, 25);
+
+	std::cout << "\n=========================================" << std::endl;
+	std::cout << "	LA BASE DE DATOS DE VIRUS HA SIDO ACTUALIZADA.\n" << std::endl;
+	std::cout << "Se han encontrado datos corruptos en: " << enemigo.getNombre() << std::endl;
+	std::cout << "=========================================\n" << std::endl;
+
+	int accionCombate = 0;
+
+	while (jugador.estaVivo() && enemigo.estaVivo())
+	{
+
+		//turno d jugador
+		std::cout << "tu HP: " << jugador.getSalud() << "|| HP enemigo: " << enemigo.getSalud() << std::endl;
+		std::cout << "1. Ejecutar Antivirus (Atacar)" << std::endl;
+		std::cout << "2. Abrir directorio (usar item)" << std::endl; //por hacER!!!!!
+		std::cout << "3. *Desconecta la pc* (Huir)" << std::endl;
+		std::cout << "ELIGE UNA OPCION: " << std::endl;
+		std::cin >> accionCombate;
+
+		switch (accionCombate)
+		{
+		case 1:
+			std::cout << "[La base d datos de virus ataca]" << std::endl;
+			enemigo.recibirDanio(jugador.getAtaque());
+			break;
+		case 2:
+			std::cout << "[Abriendo tus archivos]" << std::endl; //POR HACER AAAAAAAAAAAAAA
+			break;
+		case 3:
+			std::cout << "[Reiniciando equipo. Cancelando todas las tareas en ejecucion]" << std::endl;
+			return;
+		default:
+			std::cput << "[ERROR. intenta de nuevo]" << std::endl;
+			break;
+		}
+
+		if (!enemigo.estaVivo())
+		{
+			std::cout << enemigo.getNombre() << " ha sido neutralizado de tu sistema." << std::endl;
+			std::cout << "Recompensa: " << enemigo.getExperienciaQueSuelta() << " XP." << std::endl;
+			break;
+		}
+
+		std::cout << "\n--- TURNO DEL VIRUS ---" << std::endl;
+		enemigo.atacar(jugador);
+
+		if (!jugador.estaVivo()) {
+			std::cout << "\n ChatGPT ha invadido el corazón de tu maquina. nimodo." << std::endl;
+			std::cout << "--- GAME OVER ---" << std::endl;
+			break;
+	}
+
+
+}
+
 
 int main()
 {
@@ -247,7 +308,7 @@ int main()
 			jugador.mostrarInfoJugador();
 			break;
 		case 3:
-			std::cout << "COMBATE VS CHAT Y SUS ARCHIVILLOS CORRUPTIRIJILLOS" << std::endl;
+			iniciarCombate(jugador);
 			break;
 		default:
 			break;
