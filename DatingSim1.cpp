@@ -4,7 +4,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <thread>
+#include <chrono>
 
+void escribirLento(std::string texto, int ms_retraso = 25)
+{
+	for (char letra : texto)
+	{
+		std::cout << letra << std::flush;
+		std::this_thread::sleep_for(std::chrono::milliseconds(ms_retraso))
+	}
+}
 
 //Items seran "archivos" o "apks"??
 
@@ -71,7 +81,7 @@ public:
 	}
 
 
-	class Virus : public EntidadSistema
+class Virus : public EntidadSistema
 	{
 	public:
 		Virus(std::string param_nombre, int param_salud, int param_ataque, param_xpQueSuelta) : EntidadSistema(param_nombre, param_salud, param_ataque)
