@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\galle\\proyectitosYTareas\\POO\\Proyecto\\HDTdatingsim_1\\chatgptDatingSim\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{50A8DD28-AEEB-415C-850E-77C49F980290}|HDTdatingsim_1.vcxproj|C:\\Users\\galle\\proyectitosYTareas\\POO\\Proyecto\\HDTdatingsim_1\\chatgptDatingSim\\DatingSim1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{50A8DD28-AEEB-415C-850E-77C49F980290}|HDTdatingsim_1.vcxproj|solutionrelative:DatingSim1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DatingSim1.cpp",
+              "DocumentMoniker": "C:\\Users\\galle\\proyectitosYTareas\\POO\\Proyecto\\HDTdatingsim_1\\chatgptDatingSim\\DatingSim1.cpp",
+              "RelativeDocumentMoniker": "DatingSim1.cpp",
+              "ToolTip": "C:\\Users\\galle\\proyectitosYTareas\\POO\\Proyecto\\HDTdatingsim_1\\chatgptDatingSim\\DatingSim1.cpp",
+              "RelativeToolTip": "DatingSim1.cpp",
+              "ViewState": "AgIAAP0AAAAADNrk8BEQwAQBAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-05-18T13:45:38.109Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ void escribirLento(std::string texto, int ms_retraso = 25)
 	for (char letra : texto)
 	{
 		std::cout << letra << std::flush;
-		std::this_thread::sleep_for(std::chrono::milliseconds(ms_retraso))
+		std::this_thread::sleep_for(std::chrono::milliseconds(ms_retraso));
 	}
 }
 
@@ -48,10 +48,12 @@ public:
 	}
 };
 //clase padre para pasar por herencia
-class EntidadSistema {
+class EntidadSistema
+{
 protected:
 	std::string nombre;
 	int saludActual;
+	int saludMax;
 	int danioAtaque;
 	int nivel;
 	int experiencia;
@@ -67,9 +69,9 @@ public:
 		experiencia = 0;
 	}
 
-	std::string getNombre() { return nombreVirus; }
+	std::string getNombre() { return nombre; }
 	int getSalud() { return saludActual; }
-	int getAtaque() { return danio; }
+	int getAtaque() { return danioAtaque; }
 	int getNivel() { return nivel; }
 
 	bool estaVivo() { return saludActual > 0; }
@@ -79,24 +81,8 @@ public:
 		saludActual -= danio; //se resta daño hecho a la vida
 		if (saludActual < 0) { saludActual = 0; } //para q no tenga vida negativa 
 	}
+};
 
-
-class Virus : public EntidadSistema
-	{
-	public:
-		Virus(std::string param_nombre, int param_salud, int param_ataque, param_xpQueSuelta) : EntidadSistema(param_nombre, param_salud, param_ataque)
-		{
-			experiencia = param_xpQueSuelta;
-		}
-
-		int getExperienciaQueSuelta() { return experiencia; }
-
-		void atacar(Jugador& objetivo)
-		{
-			std::cout << "\n[!] " << nombre << " esta ejecutando un script malicioso..." << std::endl;
-			objetivo.recibirDanio(danioAtaque);
-			std::cout << "Tienes " << danioAtaque << "MB de archivos corruptos" << std::endl;
-		}
 
 
 class Jugador : public EntidadSistema
@@ -106,14 +92,14 @@ private:
 	int oroJugador; // cambiar despues por otra "moneda"
 	std::vector<Item> inventario;
 
-	//constructor
+		//constructor
 public:
 	Jugador(std::string param_nombre, int oroInicial) : EntidadSistema(param_nombre, 100, 20)
 	{
 		oroJugador = oroInicial;
 	}
 
-	//getters originales
+		//getters originales
 	int getOro() { return oroJugador; }
 	//comprar
 	void gastarOro(int cantidad) { oroJugador -= cantidad; }
@@ -128,20 +114,11 @@ public:
 		}
 	}
 
-	
-
-	/*getters combate
-	int getSalud() { return saludActual; }
-	int getAtaque() { return danioAtaqueJugador; }
-
-	//Revisa que jugador aún tenga vida 
-	bool estaVivo() { return saludActual > 0; } */
-
 
 	void mostrarInfoJugador() {
-		std::cout << "Usuario:" << nombreJugador << "Monedas(?): $" << oroJugador << std::endl;
+		std::cout << "Usuario:" << nombre << "Monedas(?): $" << oroJugador << std::endl;
 		std::cout << "SALUD/ESPACIO: " << saludActual << "/" << saludMax << std::endl;
-		std::cout << "Fuerza d antiviru: " << danioAtaqueJugador << std::endl;
+		std::cout << "Fuerza d antiviru: " << danioAtaque << std::endl;
 
 		std::cout << "--- INVENTARIO ---" << std::endl;
 
@@ -165,18 +142,92 @@ public:
 		inventario.push_back(nuevoItem); // se agrega al final
 	}
 
-	
+	//Funcion para usar los items del inventario, se usa bool para que salga true si se uso el item y false para cancelar o no usar
+	bool usarItemEnCombate()
+	{
+		if (inventario.empty())
+		{
+			std::cout << "INVENTARIO VACÍO" << std::endl;
+			return false;
+		}
+
+		std::cout << "--- archivos guardados ---" << std::endl;
+
+		for (size_t i = 0; i < inventario.size(); i++)//for para mostrar items en el inventario
+		{
+			std::cout << i + 1 << ". " << inventario[i].getNombre() << " (" << inventario[i].getDescripcion() << ")" << std::endl;
+		}
+		std::cout << "0. Cancelar." << std::endl;
+		std::cout << "Selecciona un archivo: " << std::endl;
+
+		int eleccion;
+		std::cin >> eleccion;
+
+		if (eleccion == 0) { return false; } //regresa al combate 
+
+		if (eleccion > 0 && eleccion < inventario.size())
+		{
+			int indice = eleccion - 1;
+			std::string nombreItemUsado = inventario[indice].getNombre();
+
+
+			if (nombreItemUsado == "Remedio de Backup")
+			{
+				curar(50);
+			}
+			else if (nombreItemUsado == "Antivirus de Fuerza Bruta")
+			{
+				danioAtaque += 10;
+				std::cout << "[+] Tu daño ha aumentado temporalmente." << std::endl;
+			}
+			//else if (nombreItemUsado == )
+			else 
+			{
+				std::cout << "[?] Ejecutaste " << nombreItemUsado << ", pero no tiene efecto en combate." << std::endl;
+			}
+			
+			//borrar item del inventario
+
+			inventario.erase(inventario.begin() + indice);
+			return true;
+		}
+		else 
+		{
+			std::cout << "[X] Indice invalido." << std::endl;
+			return false;
+		}
+	}
+
+
 
 };
 
-void abrirTienda(Jugador& jugador, std::vector<Item> &catalogo)
+class Virus : public EntidadSistema
+{
+public:
+	Virus(std::string param_nombre, int param_salud, int param_ataque, int param_xpQueSuelta) : EntidadSistema(param_nombre, param_salud, param_ataque)
+	{
+		experiencia = param_xpQueSuelta;
+	}
+
+	int getExperienciaQueSuelta() { return experiencia; }
+
+	void atacar(Jugador& objetivo)
+	{
+		std::cout << "\n[!] " << nombre << " esta ejecutando un script malicioso..." << std::endl;
+		objetivo.recibirDanio(danioAtaque);
+		std::cout << "Tienes " << danioAtaque << "MB de archivos corruptos" << std::endl;
+	}
+};
+
+void abrirTienda(Jugador& jugador, std::vector<Item>& catalogo)
 { //nombre descripcion precio y stock
 
 
 	int opcion = 0;
 
 	do {
-		std::cout << "TIENDA(?)" << std::endl; 
+		std::cout << "TIENDA(?)" << std::endl;
 
 		for (size_t i = 0; i < catalogo.size(); i++) //mostra tienda y 0 para salir
 		{
@@ -192,7 +243,7 @@ void abrirTienda(Jugador& jugador, std::vector<Item> &catalogo)
 		{
 			int indice = opcion - 1; //como la maquina lee el indice desde el cero se le resta para que sea la opcion elegida 
 
-			if (catalogo[indice].getCantidad() > 0 && jugador.getOro() >= catalogo[indice].getPrecio()) 
+			if (catalogo[indice].getCantidad() > 0 && jugador.getOro() >= catalogo[indice].getPrecio())
 			{
 				//cobrar"" y reducir cantidad disponible:3
 				jugador.gastarOro(catalogo[indice].getPrecio());
@@ -215,7 +266,7 @@ void abrirTienda(Jugador& jugador, std::vector<Item> &catalogo)
 				std::cout << "no trais feria, nunca trais feria" << std::endl;
 			}
 		}
-	} while(opcion != 0); // 0 para salir 
+	} while (opcion != 0); // 0 para salir 
 }
 
 //Funcion de combate :3
@@ -250,12 +301,13 @@ void iniciarCombate(Jugador& jugador)
 			break;
 		case 2:
 			std::cout << "[Abriendo tus archivos]" << std::endl; //POR HACER AAAAAAAAAAAAAA
+			//if (Jugador)
 			break;
 		case 3:
 			std::cout << "[Reiniciando equipo. Cancelando todas las tareas en ejecucion]" << std::endl;
 			return;
 		default:
-			std::cput << "[ERROR. intenta de nuevo]" << std::endl;
+			std::cout << "[ERROR. intenta de nuevo]" << std::endl;
 			break;
 		}
 
@@ -273,11 +325,11 @@ void iniciarCombate(Jugador& jugador)
 			std::cout << "\n ChatGPT ha invadido el corazón de tu maquina. nimodo." << std::endl;
 			std::cout << "--- GAME OVER ---" << std::endl;
 			break;
+		}
+
+
 	}
-
-
 }
-
 
 int main()
 {
@@ -308,10 +360,9 @@ int main()
 		std::cout << "0. Apagar PC" << std::endl;
 		std::cout << "Elige una opcion: ";
 		std::cin >> accion;
-
 		switch (accion)
 		{
-		case 1: 
+		case 1:
 			abrirTienda(jugador, catalogo);
 			break;
 		case 2:
@@ -326,4 +377,4 @@ int main()
 	} while (accion != 0);
 
 	return 0;
-}
+};
