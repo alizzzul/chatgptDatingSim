@@ -41,7 +41,7 @@ public:
 	int getPrecio() { return precioItem; }
 	int getCantidad() { return cantidadItem; }
 
-	//setter para la "tiendita"
+	//setter para reducirle item a la "tienda"
 	void reducirCantidad()
 	{
 		if (cantidadItem > 0) cantidadItem--;
@@ -79,17 +79,17 @@ public:
 	void recibirDanio(int danio)
 	{
 		saludActual -= danio; //se resta daño hecho a la vida
-		if (saludActual < 0) { saludActual = 0; } //para q no tenga vida negativa 
+		if (saludActual < 0) { saludActual = 0; } // no vida negativa 
 	}
 };
 
 
 
-class Jugador : public EntidadSistema
+class Jugador : public EntidadSistema //se pasan las variables d entidad a jugador
 {
 private:
 
-	int oroJugador; // cambiar despues por otra "moneda"
+	int oroJugador; //  "moneda"
 	std::vector<Item> inventario;
 
 		//constructor
@@ -157,7 +157,7 @@ public:
 		{
 			std::cout << i + 1 << ". " << inventario[i].getNombre() << " (" << inventario[i].getDescripcion() << ")" << std::endl;
 		}
-		std::cout << "0. Cancelar." << std::endl;
+		std::cout << "0. Cancelar." << std::endl; //salida
 		std::cout << "Selecciona un archivo: " << std::endl;
 
 		int eleccion;
@@ -165,7 +165,7 @@ public:
 
 		if (eleccion == 0) { return false; } //regresa al combate 
 
-		if (eleccion > 0 && eleccion < inventario.size())
+		if (eleccion > 0 && eleccion < inventario.size()) //verifica que sea valido
 		{
 			int indice = eleccion - 1;
 			std::string nombreItemUsado = inventario[indice].getNombre();
@@ -191,7 +191,7 @@ public:
 			inventario.erase(inventario.begin() + indice);
 			return true;
 		}
-		else 
+		else //verifica que sea valido 
 		{
 			std::cout << "[X] Indice invalido." << std::endl;
 			return false;
@@ -212,7 +212,7 @@ public:
 
 	int getExperienciaQueSuelta() { return experiencia; }
 
-	void atacar(Jugador& objetivo)
+	void atacar(Jugador& objetivo)//ataque del virus
 	{
 		std::cout << "\n[!] " << nombre << " esta ejecutando un script malicioso..." << std::endl;
 		objetivo.recibirDanio(danioAtaque);
@@ -301,7 +301,10 @@ void iniciarCombate(Jugador& jugador)
 			break;
 		case 2:
 			std::cout << "[Abriendo tus archivos]" << std::endl; //POR HACER AAAAAAAAAAAAAA
-			//if (Jugador)
+			if (jugador.usarItemEnCombate() == false)
+			{
+				continue;
+			}
 			break;
 		case 3:
 			std::cout << "[Reiniciando equipo. Cancelando todas las tareas en ejecucion]" << std::endl;
@@ -346,7 +349,7 @@ int main()
 	Item("Antivirus de Fuerza Bruta", "Aumenta tu dano contra Archivos Corruptos.", 200, 3),
 	Item("Pocion de Firewall", "ChatGPT no podra rastrear tu IP temporalmente.", 100, 5),
 	Item("Borrador de Historial", "Te vuelve invisible a sus berrinches.", 150, 2),
-	Item("Remedio de Backup", "Restaura archivos vitales danados en combate.", 50, 10)
+	Item("Remedio de Backup", "Restaura archivos vitales daniados en combate.", 50, 10)
 	};
 
 
