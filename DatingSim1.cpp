@@ -81,6 +81,8 @@ public:
 		saludActual -= danio; //se resta daño hecho a la vida
 		if (saludActual < 0) { saludActual = 0; } // no vida negativa 
 	}
+
+
 };
 
 
@@ -198,7 +200,29 @@ public:
 		}
 	}
 
+	void ganarExperiencia(int xpGanada)
+	{
+		experiencia += xpGanada;
+		std::cout << "+" << xpGanada << "xp" << std::endl;
+		//aumenta la dificultad cada nivel
+		int xpNecesaria = nivel * 50;
 
+		while (experiencia >= xpNecesaria)
+		{
+			experiencia -= xpNecesaria;//se cobra la xp y sube de nivel 
+			nivel++;
+			//nuevas stats:)
+			saludMax += 25;
+			saludActual = saludMax;
+			danioAtaque += 8;
+
+			escribirLento("[SISTEMA ACTUALIZADO] Nivel de Administrador: " + std::to_string(nivel) + "\n", 40);
+			std::cout << "> Salud Maxima escalada a: " << saludMax << " MB" << std::endl;
+			std::cout << "> Fuerza de Antivirus escalada a: " << danioAtaque << " Mbps" << std::endl;
+
+
+		}
+	}
 
 };
 
@@ -273,7 +297,7 @@ void abrirTienda(Jugador& jugador, std::vector<Item>& catalogo)
 
 void iniciarCombate(Jugador& jugador)
 {
-	Virus enemigo("Troyano_Celoso.exe", 50, 10, 25);
+	Virus enemigo("Troyano_Celoso.exe", 50, 10, 120);//cambiotemporal
 
 	std::cout << "\n=========================================" << std::endl;
 	std::cout << "	LA BASE DE DATOS DE VIRUS HA SIDO ACTUALIZADA.\n" << std::endl;
@@ -300,7 +324,7 @@ void iniciarCombate(Jugador& jugador)
 			enemigo.recibirDanio(jugador.getAtaque());
 			break;
 		case 2:
-			std::cout << "[Abriendo tus archivos]" << std::endl; //POR HACER AAAAAAAAAAAAAA
+			std::cout << "[Abriendo tus archivos]" << std::endl; //Abre la opcion para usar items
 			if (jugador.usarItemEnCombate() == false)
 			{
 				continue;
@@ -314,10 +338,14 @@ void iniciarCombate(Jugador& jugador)
 			break;
 		}
 
-		if (!enemigo.estaVivo())
+		if (!enemigo.estaVivo())//verifica victoria
 		{
 			std::cout << enemigo.getNombre() << " ha sido neutralizado de tu sistema." << std::endl;
 			std::cout << "Recompensa: " << enemigo.getExperienciaQueSuelta() << " XP." << std::endl;
+
+			jugador.ganarOro(50);
+			jugador.ganarExperiencia(enemigo.getExperienciaQueSuelta());
+
 			break;
 		}
 
