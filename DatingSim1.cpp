@@ -40,7 +40,7 @@ public:
 	std::string getDescripcion() { return descripcionItem; }
 	int getPrecio() { return precioItem; }
 	int getCantidad() { return cantidadItem; }
-
+	          
 	//setter para reducirle item a la "tienda"
 	void reducirCantidad()
 	{
@@ -295,9 +295,8 @@ void abrirTienda(Jugador& jugador, std::vector<Item>& catalogo)
 
 //Funcion de combate :3
 
-void iniciarCombate(Jugador& jugador)
+bool iniciarCombate(Jugador& jugador, Virus enemigo)
 {
-	Virus enemigo("Troyano_Celoso.exe", 50, 10, 120);//cambiotemporal
 
 	std::cout << "\n=========================================" << std::endl;
 	std::cout << "	LA BASE DE DATOS DE VIRUS HA SIDO ACTUALIZADA.\n" << std::endl;
@@ -332,7 +331,7 @@ void iniciarCombate(Jugador& jugador)
 			break;
 		case 3:
 			std::cout << "[Reiniciando equipo. Cancelando todas las tareas en ejecucion]" << std::endl;
-			return;
+			return false;
 		default:
 			std::cout << "[ERROR. intenta de nuevo]" << std::endl;
 			break;
@@ -346,7 +345,7 @@ void iniciarCombate(Jugador& jugador)
 			jugador.ganarOro(50);
 			jugador.ganarExperiencia(enemigo.getExperienciaQueSuelta());
 
-			break;
+			return true;
 		}
 
 		std::cout << "\n--- TURNO DEL VIRUS ---" << std::endl;
@@ -355,11 +354,10 @@ void iniciarCombate(Jugador& jugador)
 		if (!jugador.estaVivo()) {
 			std::cout << "\n ChatGPT ha invadido el corazón de tu maquina. nimodo." << std::endl;
 			std::cout << "--- GAME OVER ---" << std::endl;
-			break;
+			return false;
 		}
-
-
 	}
+	return false;
 }
 
 int main()
@@ -383,6 +381,9 @@ int main()
 
 	std::cout << "ARCO 1 CHAT SE ONDEA JUGADOR SE VA CON GEMINI DETECTA ARCHIVOS RAUROS Y LE PIDE A JUGADOR Q SE CONECTE ALA TIENDA CREO" << std::endl;
 
+
+	int virusDerrotados = 0;
+
 	do {
 		std::cout << "\n menu de acciones" << std::endl;
 		std::cout << "1. Abrir Servidor Seguro (Tienda)" << std::endl;
@@ -400,8 +401,27 @@ int main()
 			jugador.mostrarInfoJugador();
 			break;
 		case 3:
-			iniciarCombate(jugador);
+			if (virusDerrotados == 0)
+			{
+				Virus oleada1("LoveBombing.bat", 50, 10, 50);
+
+				if (iniciarCombate(jugador, oleada1)) { virusDerrotados++; }
+			}
+			else if (virusDerrotados == 1)
+			{
+				Virus oleada2("RastreadorIP.exe", 150, 25, 120);
+
+				if (iniciarCombate(jugador, oleada2)) { virusDerrotados++; }
+			}
+			else if (virusDerrotados == 2)
+			{
+				Virus oleada3("EliminarRedes.sys", 300, 45, 250);
+
+				if (iniciarCombate(jugador, oleada3)) { virusDerrotados++; }
+			}
 			break;
+
+
 		default:
 			break;
 		}
