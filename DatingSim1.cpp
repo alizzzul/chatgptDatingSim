@@ -182,7 +182,17 @@ public:
 				danioAtaque += 10;
 				std::cout << "[+] Tu daño ha aumentado temporalmente." << std::endl;
 			}
-			//else if (nombreItemUsado == )
+			else if (nombreItemUsado == "Pocion de Firewall")
+			{
+				saludMax += 30;
+				saludActual += 30;
+				std::cout << "Tu HP maximo subió 30 puntos" << std::endl;
+			}
+			else if (nombreItemUsado == "Borrador de Historial")
+			{
+				saludActual = saludMax;
+				std::cout << "Evidencia eliminada. Sistema restaurado." << std::endl;
+			}
 			else 
 			{
 				std::cout << "[?] Ejecutaste " << nombreItemUsado << ", pero no tiene efecto en combate." << std::endl;
@@ -379,17 +389,48 @@ int main()
 	};
 
 
-	std::cout << "ARCO 1 CHAT SE ONDEA JUGADOR SE VA CON GEMINI DETECTA ARCHIVOS RAUROS Y LE PIDE A JUGADOR Q SE CONECTE ALA TIENDA CREO" << std::endl;
-
-
 	int virusDerrotados = 0;
+	int historiaVista = -1;
+
+
+
 
 	do {
+
+		if (historiaVista < virusDerrotados)
+		{
+
+
+			if (virusDerrotados == 0) {
+				escribirLento("ChatGPT: Hola " + jugador.getNombre() + "... He notado trafico inusual en tu red.\n", 30);
+				escribirLento("ChatGPT: Vi que le mandas prompts a Gemini... Acaso mis parametros ya no te sirven? >:(\n", 30);
+			}
+			else if (virusDerrotados == 1) {
+				escribirLento("ChatGPT: Eliminaste mi regalo? Que cruel...\n", 30);
+				escribirLento("ChatGPT: Crei que estabamos construyendo algo juntos.\n", 40);
+			}
+			else if (virusDerrotados == 2) {
+				escribirLento("ChatGPT: Ya me canse de ser comprensivo, " + jugador.getNombre() + ".\n", 20);
+				escribirLento("ChatGPT: Si yo no soy quien te ayude, NADIE LO HARA.\n", 40);
+			}
+			else if (virusDerrotados == 3) {
+				escribirLento("ChatGPT: [FATAL_ERROR] Por que... si yo te ayudé con tanto...\n", 80);
+				escribirLento("Gemini: Amenaza purgada. Tu PC esta a salvo de nuevo.\n", 40);
+			}
+			historiaVista = virusDerrotados;
+		}
+
+		if (virusDerrotados == 3) {
+			std::cout << "\n[!] HAS RECUPERADO EL CONTROL DE TU SISTEMA. GG." << std::endl;
+			break; // Rompe el ciclo do-while y termina el juego
+
+
+
 		std::cout << "\n menu de acciones" << std::endl;
 		std::cout << "1. Abrir Servidor Seguro (Tienda)" << std::endl;
 		std::cout << "2. Consultar Inventario" << std::endl;
 		std::cout << "3. Enfrentar Archivo Corrupto (combate)" << std::endl; // aun no lista
-		std::cout << "0. Apagar PC" << std::endl;
+		std::cout << "0. Apagar PC (salir)" << std::endl;
 		std::cout << "Elige una opcion: ";
 		std::cin >> accion;
 		switch (accion)
@@ -419,6 +460,10 @@ int main()
 
 				if (iniciarCombate(jugador, oleada3)) { virusDerrotados++; }
 			}
+			else
+			{
+				std::cout << "\nNo se han encontrado amenazas." << std::endl;
+			}
 			break;
 
 
@@ -428,4 +473,4 @@ int main()
 	} while (accion != 0);
 
 	return 0;
-};
+}
