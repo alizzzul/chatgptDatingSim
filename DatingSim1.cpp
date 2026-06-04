@@ -319,11 +319,13 @@ bool iniciarCombate(Jugador& jugador, Virus enemigo)
 	{
 
 		//turno d jugador
+			escribirLento("ELIGE UNA OPCION\n", 60);
+
 		std::cout << "tu HP: " << jugador.getSalud() << "|| HP enemigo: " << enemigo.getSalud() << std::endl;
 		std::cout << "1. Ejecutar Antivirus (Atacar)" << std::endl;
 		std::cout << "2. Abrir directorio (usar item)" << std::endl; //por hacER!!!!!
 		std::cout << "3. *Desconecta la pc* (Huir)" << std::endl;
-		std::cout << "ELIGE UNA OPCION: " << std::endl;
+		escribirLento("ELIGE UNA OPCION\n", 60);
 		std::cin >> accionCombate;
 
 		switch (accionCombate)
@@ -358,7 +360,7 @@ bool iniciarCombate(Jugador& jugador, Virus enemigo)
 			return true;
 		}
 
-		std::cout << "\n--- TURNO DEL VIRUS ---" << std::endl;
+		escribirLento("--- TURNO DEL VIRUS ---\n", 60);
 		enemigo.atacar(jugador);
 
 		if (!jugador.estaVivo()) {
