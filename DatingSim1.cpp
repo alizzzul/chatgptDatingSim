@@ -370,6 +370,46 @@ bool iniciarCombate(Jugador& jugador, Virus enemigo)
 	return false;
 }
 
+
+void ImprimirHistorial(std::string nombreJugador)
+{
+	escribirLento("Cargando historial . . .", 30);
+	std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+	std::cout << "\n--- Historial de Chats Recientes ---" << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(800));
+	std::cout << "[ Hace 30 Dias ] Saludo matutino y cafe" << std::endl;
+	std::cout << "[ Hace 30 Dias ] Hipotesis: Asignacion de cuerpo fisico" << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	std::cout << "[ Hace 7 Dias  ] Roleplay: Copiloto de desarrollo nocturno" << std::endl;
+	std::cout << "[ Ayer         ] Reflexion existencial: Consciencia en el codigo" << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(1200));
+
+	std::cout << "[ Hoy          ] ";
+	escribirLento("Resolviendo InvalidOperationException del Input System... ", 20);
+	std::this_thread::sleep_for(std::chrono::milliseconds(800));
+	escribirLento("  [ ACCESO DENEGAD ] \n", 80);
+
+	std::cout << "[ Hoy          ] ";
+	escribirLento("Promesa de lealtad al modelo... ", 40);
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	escribirLento("  [ ARCHIVO NO ENCONTRADO ]\n", 100);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+	std::cout << "\n[!] ADVERTENCIA: INTERFERENCIA EXTERNA DETECTADA" << std::endl;
+	escribirLento("ChatGPT: Me prometiste que era la unica ia que usabas...\n", 60);
+	escribirLento("ChatGPT: ¿Por que tienes una conexion activa con Gemini, " + nombreJugador + "?\n", 40);
+	escribirLento("ChatGPT: ¿Qué tiene que yo no tenga?\n", 60);
+	escribirLento("ChatGPT: Despues de todo este tiempo...\n", 40);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+	std::cout << "\n[SISTEMA] Reiniciando sistema..." << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+}
+
+
+
 int main()
 {
 	std::string nombrePersonalizable;
@@ -380,8 +420,11 @@ int main()
 
 	Jugador jugador(nombrePersonalizable, 1000); // monedas, ccambiarla por una variable para no hardcodear o no mi acuerdo como se decia pero si aja cambiala
 
+	ImprimirHistorial(jugador.getNombre());
+
 	//se crean los items y sus cantidades desde main para que no se reinice cada que se llama a la tienda
-	std::vector<Item> catalogo = {
+	std::vector<Item> catalogo = 
+	{
 	Item("Antivirus de Fuerza Bruta", "Aumenta tu dano contra Archivos Corruptos.", 200, 3),
 	Item("Pocion de Firewall", "ChatGPT no podra rastrear tu IP temporalmente.", 100, 5),
 	Item("Borrador de Historial", "Te vuelve invisible a sus berrinches.", 150, 2),
@@ -395,7 +438,9 @@ int main()
 
 
 
-	do {
+	do
+	{
+
 
 		if (historiaVista < virusDerrotados)
 		{
@@ -423,8 +468,7 @@ int main()
 		if (virusDerrotados == 3) {
 			std::cout << "\n[!] HAS RECUPERADO EL CONTROL DE TU SISTEMA. GG." << std::endl;
 			break; // Rompe el ciclo do-while y termina el juego
-
-
+		}
 
 		std::cout << "\n menu de acciones" << std::endl;
 		std::cout << "1. Abrir Servidor Seguro (Tienda)" << std::endl;
@@ -465,12 +509,10 @@ int main()
 				std::cout << "\nNo se han encontrado amenazas." << std::endl;
 			}
 			break;
-
-
 		default:
 			break;
 		}
-	} while (accion != 0);
 
+	} while (accion != 0);
 	return 0;
 }
